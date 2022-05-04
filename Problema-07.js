@@ -13,5 +13,5 @@ function equalsArray(array1, array2){
             return bool = false
         }
     })
-    return bool
+    console.log(bool)
 }

@@ -17,5 +17,5 @@ function clearArray(array){
         return num
     })
 
-    return newArray;
+    console.log(newArray)
 }

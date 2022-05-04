@@ -19,5 +19,5 @@ function convertArrayObject(array){
             objeto[aux] = num
         }
     })
-    return objeto
+    console.log(objeto)
 }

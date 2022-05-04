@@ -11,5 +11,5 @@ function removeItemArray(array){
     let newArray = array.filter(function(ele , pos){
         return array.indexOf(ele) == pos
     })
-    return newArray
+    console.log(newArray)
 }

@@ -19,5 +19,6 @@ function newArray(size, any){
     for(let i = 0; i < size; i++){
         newarray.push(any);
     }
-return newarray}
+    console.log(newarray)
+}
 

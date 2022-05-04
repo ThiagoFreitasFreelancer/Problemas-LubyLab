@@ -14,5 +14,5 @@ function sliceArr(array, val){
             a.push(array.slice(index, index+val))
         }
     })
-    return a
+    console.log(a)
 }

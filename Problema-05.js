@@ -15,5 +15,5 @@ function removeItemArray(array, number1, number2){
         }
     }
     let newArray = array.filter(isEquals)
-    return newArray
+    console.log(newArray)
 }
