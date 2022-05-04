@@ -6,3 +6,12 @@
 Entrada do método ([1,2,3,4],[1,2,3,4]), Resultado do método: true
 
 */
+function equalsArray(array1, array2){
+    let bool = true
+    array1.map(function(ele){
+        if(array1.indexOf(ele) != array2.indexOf(ele)){
+            return bool = false
+        }
+    })
+    return bool
+}
