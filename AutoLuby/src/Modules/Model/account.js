@@ -33,9 +33,11 @@ const Account = database.define('account', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    veiculos: {
-        type: Sequelize.ARRAY,
-        allowNull: false
+    veiculo: {
+        type: Sequelize.INTEGER,
+        references:{model: 'vehicle', key: 'vehicle_id'},
+        onUpdate:'CASCADE',
+        onDelete:'CASCADE'    
     },
     biografia: {
         type: Sequelize.STRING

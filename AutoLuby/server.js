@@ -1,17 +1,22 @@
 const express =  require(`express`);
-const bd = require(`./src/Database`);
 
 const app = express();
 
-app.use(express.json());
-
 (async () => {
+
+    const db = require("./src/Database");
+    const account = require('./src/Modules/Model/account')
+    const vehicle = require('./src/Modules/Model/vehicle')
+    const vehicleBuy = require('./src/Modules/Model/vehicleBuy')
+
     try {
-        const resultado = await bd.sync();
-        //console.log("Result:", resultado);
+        const resultado = await db.sync();
+        console.log("Result:", resultado);
     } catch (error) {
-        //console.log(error);
+        console.log(error);
     }
 })();
+
+app.use(express.json());
 
 app.listen(3333, () => console.log("server is running!"));
