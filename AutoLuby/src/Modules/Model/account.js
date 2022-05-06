@@ -1,5 +1,5 @@
 const { STRING } = require('sequelize');
-const VEHICLE = require('../../Modules/Vehicles/vehicle')
+const VEHICLE = require('./vehicle')
 const Sequelize = require('sequelize');
 const database = require('../../Database');
 
