@@ -1,5 +1,7 @@
-const { Routes } = require("express");
+const { express } = require("express");
+import account from "../Controller/account.controller"
 
+const Routes = express()
 const customers = []
 
 function verifyIfExistsAccountCPF(request, response, next){
@@ -53,11 +55,11 @@ Routes.put("/account", verifyIfExistsAccountCPF, (request, response) => {
 
 });
 
-Routes.get("/account", verifyIfExistsAccountCPF, (request, response) => {
+Routes.get("/account", (request, response) => {
 
-    const { customer } = request;
+    const accountAll = account.findAll();
 
-    return response.json(customer);
+    return response.json(accountAll);
 });
 
 Routes.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
