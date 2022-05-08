@@ -1,4 +1,4 @@
-import { vehicleRepository } from "../Modules/Repositories/vehicle.repository";
+const vehicleRepository = require("../Modules/Repositories/vehicle.repository");
 
 class vehicleController{
     async findAll(){
@@ -22,4 +22,4 @@ class vehicleController{
     }
 }
 
-export { vehicleController }
+module.exports = vehicleController

@@ -1,4 +1,4 @@
-import { accountRepository } from "../Modules/Repositories/account.repository";
+const { accountRepository } = require("../Modules/Repositories/account.repository");
 
 
 class accountCrontroller{
@@ -47,4 +47,4 @@ class accountCrontroller{
 
 }
 
-export { accountCrontroller }
+module.exports = accountCrontroller

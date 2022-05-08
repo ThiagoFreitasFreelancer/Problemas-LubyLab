@@ -6,7 +6,7 @@ const Vehicle = require('./vehicle');
 const Account = database.define('account', {
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement: false,
+        autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },

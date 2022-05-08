@@ -1,7 +1,6 @@
-const { express } = require("express");
-import account from "../Controller/account.controller"
+const express = require("express");
 
-const Routes = express()
+const app = express();
 
 function verifyIfExistsAccountCPF(request, response, next){
 
@@ -15,8 +14,13 @@ function verifyIfExistsAccountCPF(request, response, next){
 
 }
 
-Routes.post("/account", (request, response) => {
+app.get("/", (request, response) => {
+    response.send("Minha rola")
+})
 
+app.post("/account", (request, response) => {
+
+    console.log("entro")
     const thisAccount = request.body;
 
     const customer = account.find( accounts => accounts.cpf === cpf );
@@ -31,7 +35,7 @@ Routes.post("/account", (request, response) => {
 
 });
 
-Routes.put("/account", verifyIfExistsAccountCPF, (request, response) => {
+app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
 
     const thisAccount = request.body;
 
@@ -47,14 +51,14 @@ Routes.put("/account", verifyIfExistsAccountCPF, (request, response) => {
 
 });
 
-Routes.get("/account", (request, response) => {
+app.get("/account", (request, response) => {
 
     const accountAll = account.findAll();
 
     return response.json(accountAll);
 });
 
-Routes.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
 
     const { cpf } = request;
 

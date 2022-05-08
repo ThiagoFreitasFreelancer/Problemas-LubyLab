@@ -1,5 +1,4 @@
-import accountModel from "../Model/account";
-
+const accountModel = require("../Model/account");
 class accountRepository{
 
     async findAll(){
@@ -60,4 +59,4 @@ class accountRepository{
     }
 }
 
-export { accountRepository }
+module.exports = accountRepository

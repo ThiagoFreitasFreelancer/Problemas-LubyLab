@@ -1,72 +1,72 @@
-const { express } = require("express");
-import vehicles from "../Controller/vehicle.controller"
+// const { express } = require("express");
+// import vehicles from "../Controller/vehicle.controller"
 
-const Routes = express()
+// const Routes = express()
 
-function verifyIfExistsAccountCPF(request, response, next){
+// function verifyIfExistsAccountCPF(request, response, next){
 
-    const { cpf } = request.headers;
+//     const { cpf } = request.headers;
 
-    const exists = vehicles.find( customers => customers.cpf === cpf );
+//     const exists = vehicles.find( customers => customers.cpf === cpf );
    
-    if(!customer){
-        return response.status(400).json({ error: "Erro customer not found"});
-    }
+//     if(!customer){
+//         return response.status(400).json({ error: "Erro customer not found"});
+//     }
 
-    request.customer = customer;
+//     request.customer = customer;
 
-    return next();
+//     return next();
 
-}
+// }
 
-Routes.post("/account", (request, response) => {
+// Routes.post("/account", (request, response) => {
 
-    const {cpf, name} = request.body;
+//     const {cpf, name} = request.body;
 
-    const customersAlreadyExists = customers.some(
-        (customer) => customer.cpf === cpf
-    );
+//     const customersAlreadyExists = customers.some(
+//         (customer) => customer.cpf === cpf
+//     );
     
-    if(customersAlreadyExists){
-        return response.status(400).json({error: `Customer already exists!`})
-    }
+//     if(customersAlreadyExists){
+//         return response.status(400).json({error: `Customer already exists!`})
+//     }
 
-    customers.push({
-        cpf,
-        name,
-        id: uuidv4(),
-        statement : [],
-    });
+//     customers.push({
+//         cpf,
+//         name,
+//         id: uuidv4(),
+//         statement : [],
+//     });
 
-   return response.status(201).send()
+//    return response.status(201).send()
 
-});
+// });
 
-Routes.put("/account", (request, response) => {
+// Routes.put("/account", (request, response) => {
 
-    const { name } = request.body;
+//     const { name } = request.body;
 
-    const { customer } = request;
+//     const { customer } = request;
 
-    customer.name = name;
+//     customer.name = name;
 
-    return response.status(201).send();
+//     return response.status(201).send();
 
-});
+// });
 
-Routes.get("/account", (request, response) => {
+// Routes.get("/account", (request, response) => {
 
-    const accountAll = account.findAll();
+//     const accountAll = account.findAll();
 
-    return response.json(accountAll);
-});
+//     return response.json(accountAll);
+// });
 
-Routes.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+// Routes.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
 
-    const { customer } = request;
+//     const { customer } = request;
 
-    customers.splice(customer, 1);
+//     customers.splice(customer, 1);
 
-    return response.status(200).json(customers);
+//     return response.status(200).json(customers);
 
-});
+// });

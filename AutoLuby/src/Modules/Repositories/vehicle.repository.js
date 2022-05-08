@@ -1,4 +1,4 @@
-import vehicleModel from "../Model/vehicle";
+const vehicleModel = require("../Model/vehicle");
 
 class vehicleRepository{
 
@@ -54,4 +54,4 @@ class vehicleRepository{
     }
 }
 
-export { vehicleRepository }
+module.exports = vehicleRepository
