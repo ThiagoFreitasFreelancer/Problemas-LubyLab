@@ -2,54 +2,46 @@ const { express } = require("express");
 import account from "../Controller/account.controller"
 
 const Routes = express()
-const customers = []
 
 function verifyIfExistsAccountCPF(request, response, next){
 
     const { cpf } = request.headers;
 
-    const customer = customers.find( customers => customers.cpf === cpf );
+    const customer = account.find( accounts => accounts.cpf === cpf );
    
     if(!customer){
         return response.status(400).json({ error: "Erro customer not found"});
     }
 
-    request.customer = customer;
-
-    return next();
-
 }
 
 Routes.post("/account", (request, response) => {
 
-    const {cpf, name} = request.body;
+    const thisAccount = request.body;
 
-    const customersAlreadyExists = customers.some(
-        (customer) => customer.cpf === cpf
-    );
-    
-    if(customersAlreadyExists){
-        return response.status(400).json({error: `Customer already exists!`})
+    const customer = account.find( accounts => accounts.cpf === cpf );
+   
+    if(!customer){
+        return response.status(400).json({ error: "Erro customer not found"});
     }
 
-    customers.push({
-        cpf,
-        name,
-        id: uuidv4(),
-        statement : [],
-    });
+    account.addAccount(thisAccount);
 
-   return response.status(201).send()
+    return response.status(201).send()
 
 });
 
 Routes.put("/account", verifyIfExistsAccountCPF, (request, response) => {
 
-    const { name } = request.body;
+    const thisAccount = request.body;
 
-    const { customer } = request;
+    const customer = account.find( accounts => accounts.cpf === cpf );
+   
+    if(!customer){
+        return response.status(400).json({ error: "Erro customer not found"});
+    }
 
-    customer.name = name;
+    account.updateAccount(thisAccount);
 
     return response.status(201).send();
 
@@ -64,9 +56,9 @@ Routes.get("/account", (request, response) => {
 
 Routes.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
 
-    const { customer } = request;
+    const { cpf } = request;
 
-    customers.splice(customer, 1);
+    account.delete(cpf);
 
     return response.status(200).json(customers);
 

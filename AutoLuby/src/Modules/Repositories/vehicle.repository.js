@@ -1,51 +1,56 @@
-import vehicleModel from "../Modules/Repositories/vehicle.repository";
+import vehicleModel from "../Model/vehicle";
 
 class vehicleRepository{
 
-    async findAll(req, res){
-        const vehicle = await vehicleModel.findAll();
-        res.json(vehicle);
+    async findAll(){
+      return await vehicleModel.findAll();
     }
 
-    findVehicle(req, res) {
-        vehicleModel.findByPk(req.params.name).then((result) => res.json(result));
+    findVehicle(name) {
+      return vehicleModel.findByPk(name).then();
     }
       
-    addvehicle(req, res) {
-        vehicleModel.create({
-            nome: req.body.nome,
-            preco: req.body.preco,
-            tipoVeiculo: req.body.tipoVeiculo,
-            descrisao: req.body.descrisao,
-        }).then((result) => res.json(result));
+    addvehicle(vehicle) {
+
+      const { nome, preco, tipoVeiculo, descrisao } = vehicle
+
+      return vehicleModel.create({
+            nome,
+            preco,
+            tipoVeiculo,
+            descrisao,
+        }).then();
     }
       
-    async updateVehicle(req, res) {
-        await vehicleModel.update(
-          {
-            nome: req.body.nome,
-            preco: req.body.preco,
-            tipoVeiculo: req.body.tipoVeiculo,
-            descrisao: req.body.descrisao,
+    async updateVehicle(vehicle) {
+
+      const { nome, preco, tipoVeiculo, descrisao, vehicle_id } = vehicle
+
+      await vehicleModel.update(
+        {
+          nome,
+          preco,
+          tipoVeiculo,
+          descrisao,
+        },
+        {
+          where: {
+              vehicle_id,
           },
-          {
-            where: {
-                vehicle_id: req.params.id,
-            },
-          }
-        );
+        }
+      );
+    
+      return vehicleModel.findByPk(id).then();
+    }
       
-        vehicleModel.findByPk(req.params.id).then((result) => res.json(result));
-      }
-      
-    async deleteVehicle(req, res) {
+    async deleteVehicle(vehicle_id) {
         await vehicleModel.destroy({
           where: {
-            vehicle_id: req.params.id,
+            vehicle_id,
           },
         });
       
-        vehicleModel.findAll().then((result) => res.json(result));
+        return vehicleModel.findAll().then();
     }
 }
 

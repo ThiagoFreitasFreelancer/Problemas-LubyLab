@@ -1,24 +1,33 @@
-const Sequelize = require('sequelize');
+const {Sequelize, DataTypes} = require('sequelize');
 const database = require('../../Database');
+const { uuidv4 } = require("uuid");
+const Vehicle = require('./vehicle');
 
-const Produto = database.define('vehicleBuy', {
-    vehicleBuy_id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+const VehicleBuy = database.define('vehicleBuy', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: false,
         allowNull: false,
         primaryKey: true
     },
-    nomeComprador: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
     precoCompra: {
-        type: Sequelize.DOUBLE
-    },
-    nomeVeiculo: {
-        type: Sequelize.STRING,
+        type: DataTypes.DOUBLE,
         allowNull: false
-    }
+    },
+    data: {
+        type: DataTypes.DOUBLE,
+        allowNull: false
+    },
 })
 
-module.exports = Produto;
+VehicleBuy.associate = function(models){
+    VehicleBuy.hasOne(models.account, {
+        constraint: true,
+        foreignkey: 'accountId'
+    })
+    VehicleBuy.hasMany(models.vehicle, {
+        constraint: true,
+        foreignkey: 'vehicleId'
+    })
+}
+module.exports = VehicleBuy;

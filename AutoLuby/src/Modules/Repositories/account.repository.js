@@ -3,51 +3,56 @@ import accountModel from "../Model/account";
 class accountRepository{
 
     async findAll(){
-        const account = await accountModel.findAll();
-        return account;
+      return account = await accountModel.findAll();
     }
 
-    findAccount(id) {
-        return accountModel.findByPk(id).then();
+    findAccount(cpf) {
+      return accountModel.findByPk(element => element.cpf == cpf).then();
     }
       
-    addAccount(req) {
-        return accountModel.create({
-            nome: req.body.nome,
-            email: req.body.email,
-            senha: req.body.senha,
-            cpf: req.body.cpf,
-            avatar: req.body.avatar,
-            tipoConta: req.body.tipoConta,
-            veiculo: req.body.veiculo,
-        }).then();
+    addAccount(account) {
+
+      const { nome, email, senha, cpf, avatar, tipoConta, veiculo, biografia } = account;
+
+      return accountModel.create(
+        nome,
+        email,
+        senha,
+        cpf,
+        avatar,
+        tipoConta,
+        veiculo,
+        biografia
+      )
     }
       
-    async updateAccount(req) {
-        await accountModel.update(
-          {
-            nome: req.body.nome,
-            email: req.body.email,
-            senha: req.body.senha,
-            cpf: req.body.cpf,
-            avatar: req.body.avatar,
-            tipoConta: req.body.tipoConta,
-            veiculo: req.body.veiculo,
+    async updateAccount(account) {
+
+      const { nome, email, senha, cpf, avatar, tipoConta, veiculo, id } = account;
+      await accountModel.update(
+        {
+          nome,
+          email,
+          senha,
+          cpf,
+          avatar,
+          tipoConta,
+          veiculo,
+        },
+        {
+          where: {
+            id,
           },
-          {
-            where: {
-              id: req.params.id,
-            },
-          }
-        );
+        }
+      );
+    
+      return accountModel.findByPk(id).then();
+    }
       
-        return accountModel.findByPk(req.params.id).then((result));
-      }
-      
-    async deleteAccount(id) {
+    async deleteAccount(cpf) {
         await accountModel.destroy({
           where: {
-            id: id,
+            cpf
           },
         });
       

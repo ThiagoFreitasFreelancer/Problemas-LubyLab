@@ -1,48 +1,48 @@
-const { STRING } = require('sequelize');
-const VEHICLE = require('./vehicle')
-const Sequelize = require('sequelize');
+const { DataTypes } = require('sequelize');
 const database = require('../../Database');
+const { uuidv4 } = require("uuid");
+const Vehicle = require('./vehicle');
 
 const Account = database.define('account', {
     id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        type: DataTypes.INTEGER,
+        autoIncrement: false,
         allowNull: false,
         primaryKey: true
     },
     nome: {
-        type: Sequelize.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     email: {
-        type: Sequelize.STRING,
-        allowNull: false
+        type: DataTypes.TEXT,
+        allowNull: true
     },
     senha: {
-        type: Sequelize.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     cpf: {
-        type: Sequelize.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     avatar: {
-        type: Sequelize.STRING
+        type: DataTypes.TEXT,
+        allowNull: true
     },
     tipoConta: {
-        type: Sequelize.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
-    veiculo: {
-        type: Sequelize.INTEGER,
-        references:{model: 'vehicle', key: 'vehicle_id'},
-        onUpdate:'CASCADE',
-        onDelete:'CASCADE'    
-    },
     biografia: {
-        type: Sequelize.STRING
-    }
-
+        type: DataTypes.TEXT,
+        allowNull: true
+    }    
 })
-
+Account.associate = function(models){
+    Account.hasMany(models.vehicle, {
+        constraint: true,
+        foreignkey: 'vehicle_Id'
+    })
+}
 module.exports = Account;

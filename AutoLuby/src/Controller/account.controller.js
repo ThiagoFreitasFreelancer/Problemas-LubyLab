@@ -3,56 +3,46 @@ import { accountRepository } from "../Modules/Repositories/account.repository";
 
 class accountCrontroller{
 
-    async findAll(req, res){
-        const account = await accountModel.findAll();
-        res.json(account);
+    async findAll(){
+      return accountRepository.findAll();
     }
 
-    findAccount(req, res) {
-        accountModel.findByPk(req.params.id).then((result) => res.json(result));
+    findAccount(cpf) {
+      return accountRepository.findAccount(cpf);
     }
-      
-    addAccount(req, res) {
-        accountModel.create({
-            nome: req.body.nome,
-            email: req.body.email,
-            senha: req.body.senha,
-            cpf: req.body.cpf,
-            avatar: req.body.avatar,
-            tipoConta: req.body.tipoConta,
-            veiculo: req.body.veiculo,
-        }).then((result) => res.json(result));
-    }
-      
-    async updateAccount(req, res) {
-        await accountModel.update(
-          {
-            nome: req.body.nome,
-            email: req.body.email,
-            senha: req.body.senha,
-            cpf: req.body.cpf,
-            avatar: req.body.avatar,
-            tipoConta: req.body.tipoConta,
-            veiculo: req.body.veiculo,
-          },
-          {
-            where: {
-              id: req.params.id,
-            },
-          }
-        );
-      
-        accountModel.findByPk(req.params.id).then((result) => res.json(result));
+
+    addAccount(account) {
+      const dados = {
+        name: account.params.name,
+        cpf: account.params.cpf,
+        id: account.params.id,
+        descricao: account.params.descricao,
+        senha: account.params.senha,
+        avatar: account.params.avatar,
+        tipoConta: account.params.tipoConta,
+        veiculo: account.params.veiculo,
+        biografia: account.params.biografia
       }
+      return accountRepository.addAccount(dados);
+    }
       
-    async deleteAccount(req, res) {
-        await accountModel.destroy({
-          where: {
-            id: req.params.id,
-          },
-        });
+    updateAccount(account) {
+      const dados = {
+        name: account.params.name,
+        cpf: account.params.cpf,
+        id: account.params.id,
+        descricao: account.params.descricao,
+        senha: account.params.senha,
+        avatar: account.params.avatar,
+        tipoConta: account.params.tipoConta,
+        veiculo: account.params.veiculo,
+        biografia: account.params.biografia
+      }
+      return accountRepository.updateAccount(dados);
+    }
       
-        accountModel.findAll().then((result) => res.json(result));
+    deleteAccount(cpf) {
+      return accountRepository.deleteAccount(cpf);
     }
 
 }
