@@ -4,7 +4,10 @@ const vehiclesServer = require('./src/Routes/vehicles.routes');
 const db = require("./src/Database");
 
 const app = express();
+
 app.use(express.json());
+app.use(accountServer);
+//app.use(vehiclesServer);
 
 (async () => {
 

@@ -24,7 +24,7 @@ const Account = database.define('account', {
     },
     cpf: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: true
     },
     avatar: {
         type: DataTypes.TEXT,
@@ -42,7 +42,8 @@ const Account = database.define('account', {
 Account.associate = function(models){
     Account.hasMany(models.vehicle, {
         constraint: true,
-        foreignkey: 'vehicle_Id'
+        foreignkey: 'vehicle_Id',
+        allowNull: true
     })
 }
 module.exports = Account;

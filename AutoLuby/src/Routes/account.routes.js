@@ -1,69 +1,68 @@
-const express = require("express");
+const { Router } = require("express");
+const accountController = require("../Controller/account.controller"); 
 
-const app = express();
+const controler = new accountController()
+const rota = Router();
 
 function verifyIfExistsAccountCPF(request, response, next){
 
     const { cpf } = request.headers;
 
-    const customer = account.find( accounts => accounts.cpf === cpf );
+    const customer = accountController.find( accounts => accounts.cpf === cpf );
    
     if(!customer){
         return response.status(400).json({ error: "Erro customer not found"});
     }
 
 }
+rota.post("/account", (request, response) => {
 
-app.get("/", (request, response) => {
-    response.send("Minha rola")
-})
-
-app.post("/account", (request, response) => {
-
-    console.log("entro")
-    const thisAccount = request.body;
-
-    const customer = account.find( accounts => accounts.cpf === cpf );
+    const account = request.body;
+    const customer = controler.findAccount(account.id);
    
     if(!customer){
-        return response.status(400).json({ error: "Erro customer not found"});
+        return response.status(400).json({ error: "Erro account awere existis"});
     }
-
-    account.addAccount(thisAccount);
+    
+    const result = controler.addAccount(account);
+    if(!result){
+        return response.status(501).send()    
+    }
 
     return response.status(201).send()
 
 });
 
-app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
-
+rota.put("/account", verifyIfExistsAccountCPF, (request, response) => {
     const thisAccount = request.body;
 
-    const customer = account.find( accounts => accounts.cpf === cpf );
+    const customer = controler.find( accounts => accounts.cpf === cpf );
    
     if(!customer){
         return response.status(400).json({ error: "Erro customer not found"});
     }
 
-    account.updateAccount(thisAccount);
+    controler.updateAccount(thisAccount);
 
     return response.status(201).send();
 
 });
 
-app.get("/account", (request, response) => {
+rota.get("/account", (request, response) => {
 
-    const accountAll = account.findAll();
+    const accountAll = controler.findAll();
 
     return response.json(accountAll);
 });
 
-app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+rota.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
 
     const { cpf } = request;
 
-    account.delete(cpf);
+    controler.delete(cpf);
 
     return response.status(200).json(customers);
 
 });
+
+module.exports = rota

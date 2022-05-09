@@ -1,20 +1,33 @@
 const accountModel = require("../Model/account");
 class accountRepository{
 
+  constructor(){
+    this.findAccount()
+    this.findAll()
+    this.addAccount()
+    this.updateAccount()
+    this.deleteAccount()
+  }
+
     async findAll(){
-      return account = await accountModel.findAll();
+      const all = await accountModel.findAll();
+      return all
     }
 
-    findAccount(cpf) {
-      return accountModel.findByPk(element => element.cpf == cpf).then();
+    findAccount(id) {
+      return accountModel.findByPk(id);
     }
       
-    addAccount(account) {
+    async addAccount(account) {
+
+      if(!account){
+        return "erro";
+      }
 
       const { nome, email, senha, cpf, avatar, tipoConta, veiculo, biografia } = account;
 
-      return accountModel.create(
-        nome,
+      return await accountModel.create({
+        nome: nome,
         email,
         senha,
         cpf,
@@ -22,10 +35,14 @@ class accountRepository{
         tipoConta,
         veiculo,
         biografia
-      )
+      })
     }
       
     async updateAccount(account) {
+
+      if(!account){
+        return "erro";
+      }
 
       const { nome, email, senha, cpf, avatar, tipoConta, veiculo, id } = account;
       await accountModel.update(
@@ -49,13 +66,18 @@ class accountRepository{
     }
       
     async deleteAccount(cpf) {
-        await accountModel.destroy({
-          where: {
-            cpf
-          },
-        });
-      
-        return accountModel.findAll().then();
+
+      if(!cpf){
+        return
+      }
+
+      await accountModel.destroy({
+        where: {
+          cpf
+        },
+      });
+    
+      return accountModel.findAll().then();
     }
 }
 

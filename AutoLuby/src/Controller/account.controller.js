@@ -1,50 +1,36 @@
-const { accountRepository } = require("../Modules/Repositories/account.repository");
+const  accountRepository  = require("../Modules/Repositories/account.repository");
 
+const accountRepo = new accountRepository();
+module.exports = class AccountCrontroller{
 
-class accountCrontroller{
+  constructor(){
+    this.findAccount()
+    this.findAll()
+    this.addAccount()
+    this.updateAccount()
+    this.deleteAccount()    
+  }
+  
+  findAll(){
+    return accountRepo.findAll()
+  }
 
-    async findAll(){
-      return accountRepository.findAll();
-    }
+  //Ok
+  findAccount( id ){
+    return accountRepo.findAccount(id);
+  }
 
-    findAccount(cpf) {
-      return accountRepository.findAccount(cpf);
-    }
-
-    addAccount(account) {
-      const dados = {
-        name: account.params.name,
-        cpf: account.params.cpf,
-        id: account.params.id,
-        descricao: account.params.descricao,
-        senha: account.params.senha,
-        avatar: account.params.avatar,
-        tipoConta: account.params.tipoConta,
-        veiculo: account.params.veiculo,
-        biografia: account.params.biografia
-      }
-      return accountRepository.addAccount(dados);
-    }
-      
-    updateAccount(account) {
-      const dados = {
-        name: account.params.name,
-        cpf: account.params.cpf,
-        id: account.params.id,
-        descricao: account.params.descricao,
-        senha: account.params.senha,
-        avatar: account.params.avatar,
-        tipoConta: account.params.tipoConta,
-        veiculo: account.params.veiculo,
-        biografia: account.params.biografia
-      }
-      return accountRepository.updateAccount(dados);
-    }
-      
-    deleteAccount(cpf) {
-      return accountRepository.deleteAccount(cpf);
-    }
+  addAccount(account) {    
+    return accountRepo.addAccount(account);
+  }
+    
+  updateAccount(account) {
+    return accountRepo.updateAccount(account);
+  }
+    
+  deleteAccount(cpf) {
+    return accountRepo.deleteAccount(cpf);
+  }
 
 }
 
-module.exports = accountCrontroller
