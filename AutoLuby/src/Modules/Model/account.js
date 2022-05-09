@@ -24,7 +24,8 @@ const Account = database.define('account', {
     },
     cpf: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
+        primaryKey: true
     },
     avatar: {
         type: DataTypes.TEXT,
