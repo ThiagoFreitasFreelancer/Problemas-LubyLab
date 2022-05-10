@@ -16,7 +16,8 @@ const Account = database.define('account', {
     },
     email: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
+        unique: true
     },
     senha: {
         type: DataTypes.TEXT,
@@ -25,7 +26,8 @@ const Account = database.define('account', {
     cpf: {
         type: DataTypes.TEXT,
         allowNull: true,
-        primaryKey: true
+        primaryKey: true,
+        unique: true
     },
     avatar: {
         type: DataTypes.TEXT,

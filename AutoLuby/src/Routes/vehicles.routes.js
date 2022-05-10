@@ -1,72 +1,73 @@
-// const { express } = require("express");
-// import vehicles from "../Controller/vehicle.controller"
+const { Router } = require("express");
+import VehiclesController from "../Controller/vehicle.controller"
 
-// const Routes = express()
+const vehiclescontroller = new VehiclesController()
 
-// function verifyIfExistsAccountCPF(request, response, next){
+const rota = Router()
 
-//     const { cpf } = request.headers;
+function verifyIfExistsVehicleId(request, response, next){
 
-//     const exists = vehicles.find( customers => customers.cpf === cpf );
+    const { vehicle_id } = request.body;
+
+    const vehicleExists = vehiclescontroller.findVehicle(vehicle_id);
    
-//     if(!customer){
-//         return response.status(400).json({ error: "Erro customer not found"});
-//     }
+    if(!vehicleExists){
+        return response.status(400).json({ error: "Erro vehicle not found"});
+    }
 
-//     request.customer = customer;
+    return next();
 
-//     return next();
+}
 
-// }
+rota.post("/vehicle", async (request, response) => {
 
-// Routes.post("/account", (request, response) => {
-
-//     const {cpf, name} = request.body;
-
-//     const customersAlreadyExists = customers.some(
-//         (customer) => customer.cpf === cpf
-//     );
+    const newVehicle = request.body;
     
-//     if(customersAlreadyExists){
-//         return response.status(400).json({error: `Customer already exists!`})
-//     }
+    const result = await controler.addAccount(newVehicle);
 
-//     customers.push({
-//         cpf,
-//         name,
-//         id: uuidv4(),
-//         statement : [],
-//     });
+    if(!result){
+        return response.status(501).send()    
+    }
 
-//    return response.status(201).send()
+    return response.status(201).send()
 
-// });
+});
 
-// Routes.put("/account", (request, response) => {
+//OK
+rota.put("/vehicle", verifyIfExistsVehicleId, async (request, response) => {
+    
+    const vehicle = request.body;
 
-//     const { name } = request.body;
+    const  newVehicle = await controler.updateAccount(vehicle);
 
-//     const { customer } = request;
+    return response.status(201).json({newVehicle});
 
-//     customer.name = name;
+});
 
-//     return response.status(201).send();
+//OK
+rota.get("/vehicle", async (request, response) => {
 
-// });
+    const result = await controler.findAll()
 
-// Routes.get("/account", (request, response) => {
+    if(!result){
+        return response.status(500).json({"erro" : "erro"})
+    }
+    return response.status(201).json({result})
+    
+});
 
-//     const accountAll = account.findAll();
+//OK
+rota.delete("/vehicle", async (request, response) => {
 
-//     return response.json(accountAll);
-// });
+    const { chassis } = request.body;  
 
-// Routes.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+    const result = await controler.deleteAccount(chassis);
+    
+    if(!result){
+        return response.status(500).json({"erro" : "erro"});
+    } 
+    return response.status(200);
 
-//     const { customer } = request;
+});
 
-//     customers.splice(customer, 1);
-
-//     return response.status(200).json(customers);
-
-// });
+module.exports = rota

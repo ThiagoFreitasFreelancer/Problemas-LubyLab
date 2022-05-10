@@ -4,30 +4,26 @@ const AccountController = require("../Controller/account.controller");
 const controler = new AccountController()
 const rota = Router();
 
-function verifyIfExistsAccountCPF(request, response, next){
+//OK
+async function verifyIfExistsAccountCPF(request, response, next){
 
-    const { cpf } = request.headers;
+    const { id } = request.body;
 
-    const account = controler.findAccount(request.body);
-
-    console.log(account)
-   
+    const account = await controler.findAccount(id);
+       
     if(!account){
         return response.status(400).json({ error: "Erro customer not found"});
     }
 
+    return next()
+
 }
 //OK
-rota.post("/account", (request, response) => {
+rota.post("/account", async (request, response) => {
 
     const account = request.body;
-    const customer = controler.findAccount(account);
-   
-    if(!customer){
-        return response.status(400).json({ error: "Erro account awere existis"});
-    }
     
-    const result = controler.addAccount(account);
+    const result = await controler.addAccount(account);
     if(!result){
         return response.status(501).send()    
     }
@@ -36,37 +32,53 @@ rota.post("/account", (request, response) => {
 
 });
 
-rota.put("/account", verifyIfExistsAccountCPF, (request, response) => {
+//OK
+rota.put("/account", verifyIfExistsAccountCPF, async (request, response) => {
+    
     const thisAccount = request.body;
 
-    const customer = controler.find( accounts => accounts.cpf === cpf );
-   
-    if(!customer){
-        return response.status(400).json({ error: "Erro customer not found"});
-    }
+    const  newAccount = await controler.updateAccount(thisAccount);
 
-    controler.updateAccount(thisAccount);
-
-    return response.status(201).send();
+    return response.status(201).json({newAccount});
 
 });
 
 //OK
-rota.get("/account", (request, response) => {
+rota.get("/account", async (request, response) => {
 
-    controler.findAll(response)
+    const result = await controler.findAll()
+
+    if(result){
+        return response.status(201).json({result})
+    }
+    return response.status(500).json({result})
 });
 
-rota.delete("/account", (request, response) => {
+//OK
+rota.delete("/account", async (request, response) => {
 
-    const { cpf } = request.body;
+    const { cpf } = request.body;  
 
-    console.log(cpf)
-
-    const result = controler.deleteAccount(cpf, response);
-
-    //return response.status(200).json({result});
+    const result = await controler.deleteAccount(cpf, response);
+    
+    if(result){
+        return response.status(200);
+    }
+    return response.status(500).json({"erro" : "erro"});
+    
 
 });
+
+rota.post('/account/buyvehicle', verifyIfExistsAccountCPF, (request, response) => {
+
+})
+
+rota.get('/account/vehicle', verifyIfExistsAccountCPF, (request, response) => {
+    
+})
+
+rota.delete('/account/salevehicle', verifyIfExistsAccountCPF, (request, response) => {
+    
+})
 
 module.exports = rota

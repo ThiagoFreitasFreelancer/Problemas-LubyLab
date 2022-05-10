@@ -1,27 +1,20 @@
-const { json } = require("sequelize");
+//const { json } = require("sequelize");
 const  accountRepository  = require("../Modules/Repositories/account.repository");
 
 const accountRepo = new accountRepository();
 module.exports = class AccountCrontroller{
  
   //OK
-  async findAll(response){
+  async findAll(){
 
     const all = await accountRepo.findAll()
-    return response.json(all);
+    return all;
 
   }
-  
-  async findAccount( request, response ){
+  //OK
+  async findAccount( id ){
     
-    const result = await accountRepo.findAccount(request.id);
-
-    console.log(result)
-
-    if(!result){
-      return json({ "erro" : "erro" })
-    }
-
+    const result = await accountRepo.findAccount( id );
     return result
   }
 
@@ -30,17 +23,13 @@ module.exports = class AccountCrontroller{
     return accountRepo.addAccount(account);
   }
     
-  updateAccount(account) {
-    return accountRepo.updateAccount(account);
+  async updateAccount(account) {
+    return await accountRepo.updateAccount(account);
   }
     
-  async deleteAccount(cpf, response) {
-
-    if(await accountRepo.deleteAccount(cpf)){
-      return response.status(201).json({"Sucess" : "sucess"})
-    }
-
-    return response.status(500).json({"Erro" : "item não excluido"})
+  //ok
+  async deleteAccount(id) {
+    return await accountRepo.deleteAccount(id)
   
   }
 }

@@ -25,9 +25,13 @@ VehicleBuy.associate = function(models){
         constraint: true,
         foreignkey: 'accountId'
     })
+    VehicleBuy.hasOne(models.account, {
+        constraint: true,
+        foreignkey: 'vendedorId'
+    })
     VehicleBuy.hasMany(models.vehicle, {
         constraint: true,
-        foreignkey: 'vehicleId'
+        foreignkey: 'vehicle_Id'
     })
 }
 module.exports = VehicleBuy;

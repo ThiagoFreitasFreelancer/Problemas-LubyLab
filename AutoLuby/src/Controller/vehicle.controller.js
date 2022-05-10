@@ -1,24 +1,26 @@
 const vehicleRepository = require("../Modules/Repositories/vehicle.repository");
 
+const vehicleRespo = new vehicleRepository();
+
 class vehicleController{
     async findAll(){
-        return vehicleRepository.findAll();
+        return await vehicleRespo.findAll();
     }
   
-    findVehicle(name) {
-        return vehicleRepository.findVehicle(name);
+    async findVehicle(vehicle_id) {
+        return await vehicleRespo.findVehicle(vehicle_id);
     }
         
-    addvehicle(vehicle) {
-        return vehicleRepository.addvehicle(vehicle);
+    async addvehicle(vehicle) {
+        return await vehicleRespo.addvehicle(vehicle);
     }
         
-    async updateVehicle(id) {
-        return vehicleRepository.updateVehicle(id);
+    async updateVehicle(vehicle) {
+        return await vehicleRespo.updateVehicle(vehicle);
     }
         
     async deleteVehicle(id) {
-        return vehicleRepository.deleteVehicle(id);
+        return vehicleRespo.deleteVehicle(id);
     }
 }
 
