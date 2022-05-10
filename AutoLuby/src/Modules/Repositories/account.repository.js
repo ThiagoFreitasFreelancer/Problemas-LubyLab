@@ -2,21 +2,23 @@ const accountModel = require("../Model/account");
 class accountRepository{
 
   //OK
-  async findAll(){
-    return await accountModel.findAll()
+  async findAll(limit = 10, base = 0){
+    return await accountModel.findAll({
+      limit: limit,
+      offset: base
+    })
   }
 
-
-  async findAccount(id) {
-    return await accountModel.findByPk(id);
+  async findAccount(cpf) {
+    return await accountModel.findOne({
+      where:{
+        cpf:cpf
+      }
+    });
   }
   
   //OK
   async addAccount(account) {
-
-    if(!account){
-      return "erro";
-    }
 
     const { nome, email, senha, cpf, avatar, tipoConta, veiculo, biografia } = account;
 
@@ -33,10 +35,6 @@ class accountRepository{
   }
     
   async updateAccount(account) {
-
-    if(!account){
-      return "erro";
-    }
 
     await accountModel.update(
       {
@@ -61,16 +59,13 @@ class accountRepository{
   //OK
   async deleteAccount(cpf) {
 
-    if(!cpf){
-      return
-    }
-
     return await accountModel.destroy({
       where: {
         cpf: cpf
       },
     });
   }
+
 }
 
 module.exports = accountRepository

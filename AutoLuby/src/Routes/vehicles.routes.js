@@ -1,44 +1,50 @@
 const { Router } = require("express");
+const vehicleController = require("../Controller/vehicle.controller");
 const VehiclesController = require("../Controller/vehicle.controller");
 
 const vehiclescontroller = new VehiclesController()
 
 const rota = Router()
 
-function verifyIfExistsVehicleId(request, response, next){
+//OK
+async function verifyIfExistsVehicleId(request, response, next){
 
-    const { vehicle_id } = request.body;
+    const { chassi } = request.headers;
 
-    const vehicleExists = vehiclescontroller.findVehicle(vehicle_id);
-   
-    if(!vehicleExists){
-        return response.status(400).json({ error: "Erro vehicle not found"});
-    }
+    try{
+        const result = await vehiclescontroller.findVehicle(chassi);
+        if(!result){
+            return response.status(500).json({"erro" : "Not Found"})
+        }        
+        return next();
 
-    return next();
+    }catch(erro){
+
+        return response.status(400).json({ "error": erro.message});
+    }    
 
 }
-
+//OK
 rota.post("/vehicle", async (request, response) => {
 
     const newVehicle = request.body;
     
-    const result = await controler.addAccount(newVehicle);
-
-    if(!result){
-        return response.status(501).send()    
+    try{
+        await vehiclescontroller.addVehicle(newVehicle);
+        return response.status(201).send()
     }
-
-    return response.status(201).send()
+    catch(erro){
+        return response.status(501).json({"erro" : erro.message})  
+    }    
 
 });
 
-//OK
+
 rota.put("/vehicle", verifyIfExistsVehicleId, async (request, response) => {
     
     const vehicle = request.body;
 
-    const  newVehicle = await controler.updateAccount(vehicle);
+    const  newVehicle = await vehiclescontroller.updateVehicle(vehicle);
 
     return response.status(201).json({newVehicle});
 
@@ -47,27 +53,64 @@ rota.put("/vehicle", verifyIfExistsVehicleId, async (request, response) => {
 //OK
 rota.get("/vehicle", async (request, response) => {
 
-    const result = await controler.findAll()
+    try{
+        const result = await vehiclescontroller.findAll()
+        return response.status(201).json({result})
 
-    if(!result){
-        return response.status(500).json({"erro" : "erro"})
+    }catch(erro){
+        return response.status(500).json({"erro" : erro.message})
     }
-    return response.status(201).json({result})
     
 });
 
 //OK
-rota.delete("/vehicle", async (request, response) => {
+rota.get("/vehicle/one", verifyIfExistsVehicleId, async (request, response) => {
 
-    const { chassis } = request.body;  
+    const { chassi } = request.headers
 
-    const result = await controler.deleteAccount(chassis);
+    try{
+
+        const result = await vehiclescontroller.findVehicle(chassi)
+        return response.status(201).json({result})
+
+    }catch(erro){
+
+        return response.status(500).json({"erro" : erro.message})
+    }
     
-    if(!result){
-        return response.status(500).json({"erro" : "erro"});
-    } 
-    return response.status(200);
+});
+
+
+rota.delete("/vehicle", verifyIfExistsVehicleId, async (request, response) => {
+
+    const { chassi } = request.headers;
+    try{
+
+        await vehiclescontroller.deleteVehicle(chassi);
+        return response.status(200).json({"Sucess": "foi"});
+
+    }catch(erro){
+       
+        return response.status(500).json({"erro" : erro.message});
+
+    }
+       
 
 });
+
+rota.get("/vehicle/status", async (request, response) =>{
+
+    const { status } = request.body;
+
+    try{
+
+        const all = await vehiclescontroller.findVehicleStatus(status)
+        return response.status(200).json({"result": all});
+
+    }catch(erro){
+        return response.status(500).json({"erro" : erro.message})
+    }
+
+})
 
 module.exports = rota

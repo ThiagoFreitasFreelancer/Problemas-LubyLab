@@ -2,35 +2,59 @@ const vehicleModel = require("../Model/vehicle");
 
 class vehicleRepository{
 
-  async findAll(){
-    return await vehicleModel.findAll();
+  async findAll(limit = 10, base = 0){
+    return await vehicleModel.findAll({
+      limit: limit,
+      offset: base
+    });
   }
 
-  async findVehicle(vehicle_id) {
-    return await vehicleModel.findByPk(vehicle_id);
+  async findVehicle(chassi) {
+    return await vehicleModel.findOne({ 
+      where:{
+        chassi : chassi
+      }
+     });
+  }
+
+  async findVehicleStatus(status) {
+    return await vehicleModel.findAll({ 
+      where:{
+        status : status
+      }
+     });
   }
     
   async addvehicle(vehicle) {
-
-    if(!vehicle){
-      return {"erro": 'erro'};
-    }
     
-    const { nome, preco, tipoVeiculo, descrisao, chassi, marca, modelo, km, ano } = vehicle
+    const { 
+      nome,
+      preco,
+      tipoVeiculo,
+      descrisao,
+      chassi,
+      marca,
+      modelo,
+      km,
+      ano,
+      status
+    } = vehicle
 
     return await vehicleModel.create({
           nome,
           preco,
           tipoVeiculo,
           descrisao,
+          chassi, 
+          marca, 
+          modelo, 
+          km, 
+          ano,
+          status
       }).then();
   }
     
   async updateVehicle(vehicle) {
-
-    if(!vehicle){
-      return {"erro": 'erro'};
-    }
 
     await vehicleModel.update(
       {
@@ -46,15 +70,21 @@ class vehicleRepository{
       }
     );
   
-    return await vehicleModel.findByPk(vehicle_id);
+    return await vehicleModel.findOne({
+      where:{
+        vehicle_id : vehicle_id
+      }
+    });
   }
     
-  async deleteVehicle(vehicle_id) {
+  async deleteVehicle(chassi) {
+
     await vehicleModel.destroy({
       where: {
-        vehicle_id,
+        chassi: chassi,
       },
     });
+
   }
 }
 

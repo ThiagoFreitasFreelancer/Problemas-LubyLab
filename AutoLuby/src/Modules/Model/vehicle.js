@@ -11,29 +11,28 @@ const Vehicle = database.define('vehicle', {
         primaryKey: true
     },
     nome: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
     },
     marca: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     chassi: {
         type: DataTypes.STRING,
         allowNull: false,
-        primaryKey: true,
         unique: true
     },
     km: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     ano: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     modelo: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     preco: {
@@ -41,11 +40,15 @@ const Vehicle = database.define('vehicle', {
         allowNull: false
     },
     tipoVeiculo: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
     },
     descrisao: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    status: {
+        type: DataTypes.TEXT,
         allowNull: true
     },
 })

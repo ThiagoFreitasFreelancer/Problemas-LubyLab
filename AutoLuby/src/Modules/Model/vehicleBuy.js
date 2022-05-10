@@ -15,7 +15,7 @@ const VehicleBuy = database.define('vehicleBuy', {
         allowNull: false
     },
     data: {
-        type: DataTypes.DOUBLE,
+        type: DataTypes.TEXT,
         allowNull: false
     },
 })

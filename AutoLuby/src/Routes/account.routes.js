@@ -7,15 +7,20 @@ const rota = Router();
 //OK
 async function verifyIfExistsAccountCPF(request, response, next){
 
-    const { id } = request.body;
-
-    const account = await controler.findAccount(id);
+    const { cpf } = request.headers;
        
-    if(!account){
-        return response.status(400).json({ error: "Erro customer not found"});
-    }
+    try{        
+        const result = await controler.findAccount(cpf);
 
-    return next()
+        if(!result){
+            return response.status(500).json({"erro" : "Not Found"})
+        }
+
+        return next()
+
+    }catch(erro){
+        return response.status(500).json({"erro" : erro.message})
+    }   
 
 }
 //OK
@@ -23,12 +28,14 @@ rota.post("/account", async (request, response) => {
 
     const account = request.body;
     
-    const result = await controler.addAccount(account);
-    if(!result){
-        return response.status(501).send()    
-    }
+    try{        
+        const result = await controler.addAccount(account);
+        return response.status(201).send()
 
-    return response.status(201).send()
+    }catch(erro){
+        const { message } = erro
+        return response.status(500).json({"erro" : message})
+    }
 
 });
 
@@ -37,35 +44,65 @@ rota.put("/account", verifyIfExistsAccountCPF, async (request, response) => {
     
     const thisAccount = request.body;
 
-    const  newAccount = await controler.updateAccount(thisAccount);
+    try{
 
-    return response.status(201).json({newAccount});
+        const  newAccount = await controler.updateAccount(thisAccount);
+        return response.status(201).json({newAccount})
+
+    }catch(erro){
+        
+        const { message } = erro
+        return response.status(500).json({ "erro" : message})
+    }
 
 });
 
 //OK
 rota.get("/account", async (request, response) => {
 
-    const result = await controler.findAll()
+    try{
 
-    if(result){
+        const result = await controler.findAll()
         return response.status(201).json({result})
+
+    }catch(erro){
+
+        const { message } = erro
+        return response.status(500).json({ "erro" : message})
     }
-    return response.status(500).json({result})
+});
+
+rota.get("/account/one", verifyIfExistsAccountCPF, async (request, response) => {
+
+    const { cpf } = request.headers;
+
+    try{
+        
+        const result = await controler.findAccount(cpf)
+        return response.status(201).json({result})
+
+    }catch(erro){
+
+        const { message } = erro
+        return response.status(500).json({ "erro" : message})
+    }
 });
 
 //OK
-rota.delete("/account", async (request, response) => {
+rota.delete("/account", verifyIfExistsAccountCPF, async (request, response) => {
 
-    const { cpf } = request.body;  
-
-    const result = await controler.deleteAccount(cpf, response);
+    const { cpf } = request.headers;
     
-    if(result){
-        return response.status(200);
+    try{
+        
+        await controler.deleteAccount(cpf);
+        return response.status(201).json()
+
+    }catch(erro){
+
+        const { message } = erro
+        return response.status(500).json({ "erro" : message})   
     }
-    return response.status(500).json({"erro" : "erro"});
-    
 
 });
 

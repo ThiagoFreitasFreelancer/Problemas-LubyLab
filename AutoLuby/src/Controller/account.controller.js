@@ -5,22 +5,22 @@ const accountRepo = new accountRepository();
 module.exports = class AccountCrontroller{
  
   //OK
-  async findAll(){
+  async findAll(limit){
 
-    const all = await accountRepo.findAll()
+    const all = await accountRepo.findAll(limit)
     return all;
 
   }
   //OK
-  async findAccount( id ){
+  async findAccount( cpf ){
     
-    const result = await accountRepo.findAccount( id );
+    const result = await accountRepo.findAccount( cpf );
     return result
   }
 
   //OK
-  addAccount(account) {    
-    return accountRepo.addAccount(account);
+  async addAccount(account) {    
+    return await accountRepo.addAccount(account);
   }
     
   async updateAccount(account) {
@@ -28,8 +28,8 @@ module.exports = class AccountCrontroller{
   }
     
   //ok
-  async deleteAccount(id) {
-    return await accountRepo.deleteAccount(id)
+  async deleteAccount(cpf) {
+    return await accountRepo.deleteAccount(cpf)
   
   }
 }

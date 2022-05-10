@@ -15,7 +15,7 @@ const Account = database.define('account', {
         allowNull: false
     },
     email: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: true,
         unique: true
     },
@@ -24,9 +24,8 @@ const Account = database.define('account', {
         allowNull: false
     },
     cpf: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: true,
-        primaryKey: true,
         unique: true
     },
     avatar: {
@@ -46,6 +45,11 @@ Account.associate = function(models){
     Account.hasMany(models.vehicle, {
         constraint: true,
         foreignkey: 'vehicle_Id',
+        allowNull: true
+    })
+    Account.hasMany(models.vehicleBuy, {
+        constraint: true,
+        foreignkey: 'vehicleBuyId',
         allowNull: true
     })
 }
