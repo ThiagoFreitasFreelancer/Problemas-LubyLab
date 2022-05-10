@@ -1,5 +1,5 @@
 const { Router } = require("express");
-import VehiclesController from "../Controller/vehicle.controller"
+const VehiclesController = require("../Controller/vehicle.controller");
 
 const vehiclescontroller = new VehiclesController()
 
