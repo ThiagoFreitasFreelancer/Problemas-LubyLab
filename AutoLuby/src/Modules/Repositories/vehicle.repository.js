@@ -62,17 +62,22 @@ class vehicleRepository{
         preco: vehicle.preco ? vehicle.preco : this.preco,
         tipoVeiculo: vehicle.tipoVeiculo ? vehicle.tipoVeiculo : this.tipoVeiculo,
         descrisao: vehicle.descrisao ? vehicle.descrisao : this.descrisao,
+        marca:vehicle.marca ? vehicle.marca : this.marca, 
+        modelo:vehicle.modelo ? vehicle.modelo : this.modelo, 
+        km:vehicle.km ? vehicle.km : this.km, 
+        ano:vehicle.ano ? vehicle.ano : this.ano,
+        status: vehicle.status ? vehicle.status : this.status
       },
       {
         where: {
-            vehicle_id,
+            chassi: chassi,
         },
       }
     );
   
     return await Vehicle.findOne({
       where:{
-        vehicle_id : vehicle_id
+        chassi : chassi
       }
     });
   }

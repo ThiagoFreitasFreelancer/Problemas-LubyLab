@@ -25,14 +25,23 @@ class vehicleBuyRepository{
       }
      });
   }
+
+  async findVehicleBuyCpf(cpf) {
+    return await VehicleBuy.findOne({ 
+      where:{
+        vendedorCpf : cpf
+      }
+     });
+  }
     
-  async addvehicleBuy(vehicleBuy) {
+  async addvehicleBuy(vehicleBuy, vehicle) {
     
     const {
-        precoVenda,
-        statusVeiculo,
-        account_Id,
-        vehicle_Id
+
+      precoVenda,
+      vendedorCpf,
+      chassiVeiculo,
+      statusVeiculo,
 
     } = vehicleBuy
 
@@ -42,13 +51,15 @@ class vehicleBuyRepository{
     ((data.getMonth() + 1)) + "/" + 
     data.getFullYear();
 
+    await Vehicle.updateVehicle(vehicle);
+
     return await VehicleBuy.create({
-        precoVenda,
-        data : dataFormatada,
-        statusVeiculo,
-        account_Id,
-        vehicle_Id
-      }).then();
+      precoVenda,
+      vendedorCpf,
+      data: dataFormatada,
+      chassiVeiculo,
+      statusVeiculo,
+    }).then();
   }
     
   async deleteVehicleBuy(id) {

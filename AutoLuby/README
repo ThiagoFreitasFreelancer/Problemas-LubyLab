@@ -24,62 +24,62 @@ OK - TESTAR VENDAS
 Visualizar:
 Descrição: Deve ser possível visualizar um único funcionário e as vendas/reservas de veículos deste.
 
-OK
+Concluido
 Remoção:
 Descrição: Deve ser possível remover um funcionário.
 
-OK
+
 RF02 - Perfil de acesso (OPCIONAL)
 Descrição: sinta-se à vontade para realizar essa tarefa e use sua criatividade, você poderá utilizar perfis de acesso e atribuir funções para tipos de funcionários (administrador, vendedor).
 
 RF03 - Autenticação
 Descrição: deve ser possível fazer a autenticação no sistema e dividir as rotas públicas das privadas
 
-OK
+Concluido
 RF04 - Crud de Veículo
 
-OK
+Concluido
 Adquirir veículo:
 Descrição: o proprietário poderá adquirir veículos para sua loja. O veículo deve ser único, os campos podem ser descritos como: marca, modelo, ano, km, cor, chassi e preço de compra.
 
-OK
+Concluido
 Listar veículo:
 Descrição: Listagem de todos veículos.
 
-OK
+Concluido
 Mostrar veículo:
 Descrição: Listagem de um único veículo.
 
-OK
+Concluido
 Remover veículo:
 Descrição: Deve ser possível remover um veículo.
 
-OK
+Concluido
 RF05 - Filtrar veículos pelo status (OPCIONAL)
 Descrição: você pode filtrar veículos vendidos ou disponíveis
 
-OK
+Concluido
 RF06 - Vender veículo
 Descrição: ao realizar esta ação, informações como: data, status do veículo, valor da venda e quem vendeu, devem ser armazenadas no banco.
 
-OK
+Concluido
 RF07 - Reservar veículo
 Descrição: ao realizar esta ação, informações como: data, valor da reserva e quem vendeu, devem ser armazenadas no banco.
 
-OK
+Concluido
 RF08 - Formatar todas as datas apresentadas ao usuário (OPCIONAL)
 Descrição: todas as datas deverão estar no formato DD/MM/yyyy
 
-OK
+Concluido
 REQUISITOS NÃO FUNCIONAIS
 
-OK
+Concluido
 RNF01 - A aplicação deverá ser feita utilizando Express com o (Sequelize) ou AdonisJs.
 
-OK
+Concluido
 RNF02 - Utilização de Migrations
 
-OK
+Concluido
 RNF03 - Utilização de Models
 
 RNF04 - Gostaríamos de ver a utilização de typescript (OPCIONAL)

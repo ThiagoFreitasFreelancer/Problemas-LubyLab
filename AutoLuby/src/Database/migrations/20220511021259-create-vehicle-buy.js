@@ -12,6 +12,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      vendedorCpf: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      chassiVeiculo: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       data: {
         allowNull: false,
         type: Sequelize.DATE

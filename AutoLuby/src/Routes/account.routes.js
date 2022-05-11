@@ -31,11 +31,16 @@ async function verifyIfExistsVheicle(request, response, next){
     const { chassi } = request.body;
        
     try{        
-        const result = await vehicleBuyController.findVehicle(chassi);
+        const vehicle = await vehicleBuyController.findVehicle(chassi);
 
-        if(!result){
+        if(!vehicle &&
+            vehicle.status.toLowerCase() != 'reservado'&&
+            vehicle.status.toLowerCase() != 'vendido'){
+
             return response.status(500).json({"erro" : "Not Found Vehicle"})
         }
+
+        request.body + vehicle;
 
         return next()
 
@@ -84,6 +89,22 @@ rota.get("/account", async (request, response) => {
     try{
 
         const result = await controler.findAll()
+        return response.status(201).json({result})
+
+    }catch(erro){
+
+        const { message } = erro
+        return response.status(500).json({ "erro" : message})
+    }
+});
+
+rota.get("/account/vendas", async (request, response) => {
+
+    const  { cpf } = request.body
+
+    try{
+
+        const result = await controler.findAccontVendas(cpf)
         return response.status(201).json({result})
 
     }catch(erro){
@@ -150,12 +171,13 @@ rota.post('/account/vehiclersale', verifyIfExistsAccountCPF, verifyIfExistsVheic
 async (request, response) => {
 
     const vehicleBuy = request.body
+    const { vehicle } = request.body
 
     try{
         if(vehicleBuy.statusVeiculo.toLowerCase() != "venda")(
             response.status(500).json({ "erro" : "Statos Incorreto"})
         )
-        await vehicleBuyController.addvehicleBuy(vehicleBuy);
+        await vehicleBuyController.addvehicleBuy(vehicleBuy, vehicle);
         return response.status(201).send()
 
     }catch(erro){

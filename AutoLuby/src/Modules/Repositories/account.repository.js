@@ -1,4 +1,5 @@
 const { Account } = require('../../Database/models');
+const { VehiclesBuy } = require('../../Database/models');
 
 module.exports = class accountRepository{
 
@@ -21,7 +22,7 @@ module.exports = class accountRepository{
   //OK
   async addAccount(account) {
 
-    const { nome, email, senha, cpf, avatar, tipoConta, veiculo, biografia } = account;
+    const { nome, email, senha, cpf, avatar, tipoConta, veiculo, biografia, vendas } = account;
 
     return await Account.create({
       nome: nome,
@@ -31,8 +32,19 @@ module.exports = class accountRepository{
       avatar,
       tipoConta,
       veiculo,
-      biografia
+      biografia,
+      vendas
     })
+  }
+
+  async findAccontVendas(cpf){
+    const account = this.findAccount(cpf)
+    const vendas = await VehiclesBuy.findVehicleBuyCpf(cpf)
+
+    return json({"Vendas" : vendas,
+          "Vendedor" : account    
+    })
+    
   }
     
   async updateAccount(account) {
@@ -42,10 +54,9 @@ module.exports = class accountRepository{
         nome: account.nome ? account.nome : this.nome,
         email: account.emailL ? account.email : this.email,
         senha: account.senha ? account.senha : this.senha,
-        cpf: account.cpf ? account.cpf : this.cpf,
         avatar: account.avatar ? account.avatar : this.avatar,
         tipoConta: account.tipoConta ? account.tipoConta : this.tipoConta,
-        veiculo: account.veiculo ? account.veiculo : this.veiculo,
+        vendas: account.vendas ? account.vendas + vendas: this.vendas,
       },
       {
         where: {

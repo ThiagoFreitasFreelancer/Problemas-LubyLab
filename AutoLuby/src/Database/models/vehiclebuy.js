@@ -11,24 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models => {
-        this.hasOne(models.account),
-        {
-          constraint: true,
-          foreignkey: 'account_Id',
-          allowNull: false,
-          unique: true
-        }
-      },
-      models => {
-        this.hasOne(models.vehicle),
-        {
-          constraint: true,
-          foreignkey: 'vehicle_Id',
-          allowNull: false,
-          unique: true
-        }     
-      }
     }
   }
   VehicleBuy.init({

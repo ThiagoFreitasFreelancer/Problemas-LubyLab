@@ -7,8 +7,12 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },vehicle_Id:{
+        allowNull: true,
+        type: Sequelize.STRING
       },
       nome: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       email: {
@@ -32,6 +36,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      vendas: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
       biografia: {
         type: Sequelize.STRING
       },
@@ -43,7 +51,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Accounts');

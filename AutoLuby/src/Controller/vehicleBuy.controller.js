@@ -16,8 +16,8 @@ class vehicleBuyController{
         return await vehicleRespo.findVehicleBuy(id);
     }
         
-    async addvehicleBuy(vehicleBuy) {
-        return await vehicleRespo.addvehicleBuy(vehicleBuy);
+    async addvehicleBuy(vehicleBuy, vehicle) {
+        return await vehicleRespo.addvehicleBuy(vehicleBuy, vehicle);
     }
         
     async deleteVehicleBuy(id) {

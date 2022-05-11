@@ -18,6 +18,11 @@ module.exports = class AccountCrontroller{
     return result
   }
 
+  async findAccontVendas(cpf){
+    const result = await accountRepo.findAccontVendas(cpf);
+    return result
+  }
+
   //OK
   async addAccount(account) {    
     return await accountRepo.addAccount(account);
