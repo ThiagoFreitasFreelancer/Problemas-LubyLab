@@ -1,16 +1,17 @@
-const accountModel = require("../Model/account");
-class accountRepository{
+const { Account } = require('../../Database/models');
+
+module.exports = class accountRepository{
 
   //OK
   async findAll(limit = 10, base = 0){
-    return await accountModel.findAll({
+    return await Account.findAll({
       limit: limit,
       offset: base
     })
   }
 
   async findAccount(cpf) {
-    return await accountModel.findOne({
+    return await Account.findOne({
       where:{
         cpf:cpf
       }
@@ -22,7 +23,7 @@ class accountRepository{
 
     const { nome, email, senha, cpf, avatar, tipoConta, veiculo, biografia } = account;
 
-    return await accountModel.create({
+    return await Account.create({
       nome: nome,
       email,
       senha,
@@ -36,7 +37,7 @@ class accountRepository{
     
   async updateAccount(account) {
 
-    await accountModel.update(
+    await Account.update(
       {
         nome: account.nome ? account.nome : this.nome,
         email: account.emailL ? account.email : this.email,
@@ -53,13 +54,13 @@ class accountRepository{
       }
     );
       
-    return accountModel.findByPk(account.id);
+    return Account.findByPk(account.id);
   }
     
   //OK
   async deleteAccount(cpf) {
 
-    return await accountModel.destroy({
+    return await Account.destroy({
       where: {
         cpf: cpf
       },
@@ -67,5 +68,3 @@ class accountRepository{
   }
 
 }
-
-module.exports = accountRepository

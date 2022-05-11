@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const vehicleController = require("../Controller/vehicle.controller");
+//const vehicleController = require("../Controller/vehicle.controller");
 const VehiclesController = require("../Controller/vehicle.controller");
 
 const vehiclescontroller = new VehiclesController()
@@ -24,7 +24,7 @@ async function verifyIfExistsVehicleId(request, response, next){
     }    
 
 }
-//OK
+//OK Compra Veiculo
 rota.post("/vehicle", async (request, response) => {
 
     const newVehicle = request.body;

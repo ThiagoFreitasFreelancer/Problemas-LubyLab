@@ -1,16 +1,16 @@
-const vehicleModel = require("../Model/vehicle");
+const { Vehicle } = require("../../Database/models");
 
 class vehicleRepository{
 
   async findAll(limit = 10, base = 0){
-    return await vehicleModel.findAll({
+    return await Vehicle.findAll({
       limit: limit,
       offset: base
     });
   }
 
   async findVehicle(chassi) {
-    return await vehicleModel.findOne({ 
+    return await Vehicle.findOne({ 
       where:{
         chassi : chassi
       }
@@ -18,7 +18,7 @@ class vehicleRepository{
   }
 
   async findVehicleStatus(status) {
-    return await vehicleModel.findAll({ 
+    return await Vehicle.findAll({ 
       where:{
         status : status
       }
@@ -40,7 +40,7 @@ class vehicleRepository{
       status
     } = vehicle
 
-    return await vehicleModel.create({
+    return await Vehicle.create({
           nome,
           preco,
           tipoVeiculo,
@@ -56,7 +56,7 @@ class vehicleRepository{
     
   async updateVehicle(vehicle) {
 
-    await vehicleModel.update(
+    await Vehicle.update(
       {
         nome: vehicle.nome ? vehicle.nome : this.nome,
         preco: vehicle.preco ? vehicle.preco : this.preco,
@@ -70,7 +70,7 @@ class vehicleRepository{
       }
     );
   
-    return await vehicleModel.findOne({
+    return await Vehicle.findOne({
       where:{
         vehicle_id : vehicle_id
       }
@@ -79,7 +79,7 @@ class vehicleRepository{
     
   async deleteVehicle(chassi) {
 
-    await vehicleModel.destroy({
+    await Vehicle.destroy({
       where: {
         chassi: chassi,
       },

@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const AccountController = require("../Controller/account.controller"); 
+const VehiclesBuyController = require('../Controller/vehicleBuy.controller')
 
 const controler = new AccountController()
+const vehicleBuyController = new VehiclesBuyController()
 const rota = Router();
 
 //OK
@@ -14,6 +16,25 @@ async function verifyIfExistsAccountCPF(request, response, next){
 
         if(!result){
             return response.status(500).json({"erro" : "Not Found"})
+        }
+
+        return next()
+
+    }catch(erro){
+        return response.status(500).json({"erro" : erro.message})
+    }   
+
+}
+
+async function verifyIfExistsVheicle(request, response, next){
+
+    const { chassi } = request.body;
+       
+    try{        
+        const result = await vehicleBuyController.findVehicle(chassi);
+
+        if(!result){
+            return response.status(500).json({"erro" : "Not Found Vehicle"})
         }
 
         return next()
@@ -106,16 +127,42 @@ rota.delete("/account", verifyIfExistsAccountCPF, async (request, response) => {
 
 });
 
-rota.post('/account/buyvehicle', verifyIfExistsAccountCPF, (request, response) => {
+rota.post('/account/vehiclereserva', verifyIfExistsAccountCPF, verifyIfExistsVheicle, 
+async (request, response) => {
 
+    const vehicleBuy = request.body
+
+    try{
+        if(vehicleBuy.statusVeiculo.toLowerCase() != "reserva")(
+            response.status(500).json({ "erro" : "Statos Incorreto"})
+        )
+        await vehicleBuyController.addvehicleBuy(vehicleBuy);
+        return response.status(201).send()
+
+    }catch(erro){
+
+        return response.status(500).json({ "erro" : erro.message})
+
+    }
 })
 
-rota.get('/account/vehicle', verifyIfExistsAccountCPF, (request, response) => {
-    
-})
+rota.post('/account/vehiclersale', verifyIfExistsAccountCPF, verifyIfExistsVheicle, 
+async (request, response) => {
 
-rota.delete('/account/salevehicle', verifyIfExistsAccountCPF, (request, response) => {
-    
+    const vehicleBuy = request.body
+
+    try{
+        if(vehicleBuy.statusVeiculo.toLowerCase() != "venda")(
+            response.status(500).json({ "erro" : "Statos Incorreto"})
+        )
+        await vehicleBuyController.addvehicleBuy(vehicleBuy);
+        return response.status(201).send()
+
+    }catch(erro){
+
+        return response.status(500).json({ "erro" : erro.message})
+
+    }
 })
 
 module.exports = rota
