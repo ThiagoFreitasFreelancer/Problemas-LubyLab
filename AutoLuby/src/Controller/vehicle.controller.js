@@ -25,7 +25,7 @@ class vehicleController{
     }
 
     async findVehicleStatus(status){
-        return await vehicleRespo.findVehicleStatus(status)
+        return await vehicleRespo.findVehicleStatus(status);
       }
 }
 

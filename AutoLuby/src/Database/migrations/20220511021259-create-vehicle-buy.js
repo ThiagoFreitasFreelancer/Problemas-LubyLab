@@ -18,7 +18,8 @@ module.exports = {
       },
       chassiVeiculo: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
       },
       data: {
         allowNull: false,

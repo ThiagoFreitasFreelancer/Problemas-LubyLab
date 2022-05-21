@@ -15,37 +15,39 @@ async function verifyIfExistsAccountCPF(request, response, next){
         const result = await controler.findAccount(cpf);
 
         if(!result){
-            return response.status(500).json({"erro" : "Not Found"})
+            return response.status(500).json({"erro" : "Not Found"});
         }
 
         return next()
 
     }catch(erro){
-        return response.status(500).json({"erro" : erro.message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
     }   
 
 }
 
 async function verifyIfExistsVheicle(request, response, next){
 
-    const { chassi } = request.body;
+    const { chassiVeiculo } = request.body;
        
     try{        
-        const vehicle = await vehicleBuyController.findVehicle(chassi);
+        const vehicle = await vehicleBuyController.findVehicle(chassiVeiculo);
 
         if(!vehicle &&
             vehicle.status.toLowerCase() != 'reservado'&&
             vehicle.status.toLowerCase() != 'vendido'){
 
-            return response.status(500).json({"erro" : "Not Found Vehicle"})
+            return response.status(500).json({"erro" : "Not Found Vehicle"});
         }
 
-        request.body + vehicle;
+        request.body.vehicle = vehicle
 
         return next()
 
     }catch(erro){
-        return response.status(500).json({"erro" : erro.message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
     }   
 
 }
@@ -53,14 +55,13 @@ async function verifyIfExistsVheicle(request, response, next){
 rota.post("/account", async (request, response) => {
 
     const account = request.body;
-    
     try{        
         const result = await controler.addAccount(account);
         return response.status(201).send()
 
     }catch(erro){
-        const { message } = erro
-        return response.status(500).json({"erro" : message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : errors[0].message})
     }
 
 });
@@ -77,8 +78,8 @@ rota.put("/account", verifyIfExistsAccountCPF, async (request, response) => {
 
     }catch(erro){
         
-        const { message } = erro
-        return response.status(500).json({ "erro" : message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : errors[0].message})
     }
 
 });
@@ -92,9 +93,8 @@ rota.get("/account", async (request, response) => {
         return response.status(201).json({result})
 
     }catch(erro){
-
-        const { message } = erro
-        return response.status(500).json({ "erro" : message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : errors[0].message})
     }
 });
 
@@ -105,12 +105,14 @@ rota.get("/account/vendas", async (request, response) => {
     try{
 
         const result = await controler.findAccontVendas(cpf)
-        return response.status(201).json({result})
+        return response.status(201).json({
+            "vendedor" : result.accountData,
+            "vendas": result.vendasData
+        })
 
     }catch(erro){
-
-        const { message } = erro
-        return response.status(500).json({ "erro" : message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
     }
 });
 
@@ -125,8 +127,8 @@ rota.get("/account/one", verifyIfExistsAccountCPF, async (request, response) => 
 
     }catch(erro){
 
-        const { message } = erro
-        return response.status(500).json({ "erro" : message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
     }
 });
 
@@ -142,49 +144,51 @@ rota.delete("/account", verifyIfExistsAccountCPF, async (request, response) => {
 
     }catch(erro){
 
-        const { message } = erro
-        return response.status(500).json({ "erro" : message})   
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro}) 
     }
 
 });
 
-rota.post('/account/vehiclereserva', verifyIfExistsAccountCPF, verifyIfExistsVheicle, 
-async (request, response) => {
-
-    const vehicleBuy = request.body
-
-    try{
-        if(vehicleBuy.statusVeiculo.toLowerCase() != "reserva")(
-            response.status(500).json({ "erro" : "Statos Incorreto"})
-        )
-        await vehicleBuyController.addvehicleBuy(vehicleBuy);
-        return response.status(201).send()
-
-    }catch(erro){
-
-        return response.status(500).json({ "erro" : erro.message})
-
-    }
-})
-
-rota.post('/account/vehiclersale', verifyIfExistsAccountCPF, verifyIfExistsVheicle, 
+rota.post('/account/vehiclereserva', verifyIfExistsVheicle, verifyIfExistsAccountCPF, 
 async (request, response) => {
 
     const vehicleBuy = request.body
     const { vehicle } = request.body
 
     try{
-        if(vehicleBuy.statusVeiculo.toLowerCase() != "venda")(
-            response.status(500).json({ "erro" : "Statos Incorreto"})
-        )
+        if(vehicleBuy.statusVeiculo.toLowerCase() != "reservado"){
+            return response.status(500).json({ "erro" : "Statos Incorreto"})
+        }
         await vehicleBuyController.addvehicleBuy(vehicleBuy, vehicle);
         return response.status(201).send()
 
     }catch(erro){
-
-        return response.status(500).json({ "erro" : erro.message})
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
 
     }
 })
+
+rota.post('/account/vehiclersale', verifyIfExistsVheicle, verifyIfExistsAccountCPF, 
+async (request, response) => {
+
+    const vehicleBuy = request.body
+    const { vehicle } = request.body
+
+    try{
+        
+        if(vehicleBuy.statusVeiculo.toLowerCase() != "vendido"){
+            return response.status(500).json({ "erro" : "Statos Incorreto"})
+        }
+        await vehicleBuyController.addvehicleBuy(vehicleBuy, vehicle);
+        return response.status(201).send()
+
+    }catch(erro){
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
+
+    }
+});
 
 module.exports = rota

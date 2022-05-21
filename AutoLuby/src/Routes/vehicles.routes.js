@@ -20,7 +20,7 @@ async function verifyIfExistsVehicleId(request, response, next){
 
     }catch(erro){
 
-        return response.status(400).json({ "error": erro.message});
+        return response.status(400).json({ "error": erro});
     }    
 
 }
@@ -34,7 +34,7 @@ rota.post("/vehicle", async (request, response) => {
         return response.status(201).send()
     }
     catch(erro){
-        return response.status(501).json({"erro" : erro.message})  
+        return response.status(501).json({"erro" : erro})  
     }    
 
 });
@@ -58,7 +58,7 @@ rota.get("/vehicle", async (request, response) => {
         return response.status(201).json({result})
 
     }catch(erro){
-        return response.status(500).json({"erro" : erro.message})
+        return response.status(500).json({"erro" : erro})
     }
     
 });
@@ -75,7 +75,7 @@ rota.get("/vehicle/one", verifyIfExistsVehicleId, async (request, response) => {
 
     }catch(erro){
 
-        return response.status(500).json({"erro" : erro.message})
+        return response.status(500).json({"erro" : erro})
     }
     
 });
@@ -91,7 +91,7 @@ rota.delete("/vehicle", verifyIfExistsVehicleId, async (request, response) => {
 
     }catch(erro){
        
-        return response.status(500).json({"erro" : erro.message});
+        return response.status(500).json({"erro" : erro});
 
     }
        
@@ -104,11 +104,17 @@ rota.get("/vehicle/status", async (request, response) =>{
 
     try{
 
-        const all = await vehiclescontroller.findVehicleStatus(status)
-        return response.status(200).json({"result": all});
+        const all = await vehiclescontroller.findVehicleStatus(status);
+
+        if(!all[0]){
+            return response.status(200).json({"erro": "Not Found"});
+        }
+
+        return response.status(200).json({"Veiclhes": all});
 
     }catch(erro){
-        return response.status(500).json({"erro" : erro.message})
+        console.log(erro)
+        return response.status(500).json({"erro" : erro})
     }
 
 })

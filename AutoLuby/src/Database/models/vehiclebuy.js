@@ -16,7 +16,9 @@ module.exports = (sequelize, DataTypes) => {
   VehicleBuy.init({
     precoVenda: DataTypes.STRING,
     data: DataTypes.DATE,
-    statusVeiculo: DataTypes.TEXT
+    statusVeiculo: DataTypes.TEXT,
+    vendedorCpf: DataTypes.TEXT,
+    chassiVeiculo: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'VehicleBuy',

@@ -18,6 +18,16 @@ module.exports = class AccountCrontroller{
     return result
   }
 
+  async findAccountLogin( email ){
+    const account = await accountRepo.findAccountEmail(email);
+    return account
+
+  }
+
+  async findAccountId(id){
+    return await accountRepo.findAccountId(id);
+  }
+
   async findAccontVendas(cpf){
     const result = await accountRepo.findAccontVendas(cpf);
     return result

@@ -1,5 +1,5 @@
-const { Account } = require('../../Database/models');
-const { VehiclesBuy } = require('../../Database/models');
+const { Account, VehicleBuy } = require('../../Database/models');
+const bkrypt = require('bcryptjs');
 
 module.exports = class accountRepository{
 
@@ -18,6 +18,25 @@ module.exports = class accountRepository{
       }
     });
   }
+
+  async findAccountEmail(email) {
+
+    const account =  await Account.findOne({ 
+      where:{
+        email : email
+      }
+     });
+    return account;
+
+  }
+
+  async findAccountId(id){
+    return await Account.findOne({
+      where:{
+        id : id
+      }
+    })
+  }
   
   //OK
   async addAccount(account) {
@@ -27,7 +46,7 @@ module.exports = class accountRepository{
     return await Account.create({
       nome: nome,
       email,
-      senha,
+      senha: bkrypt.hashSync(senha),
       cpf,
       avatar,
       tipoConta,
@@ -38,12 +57,35 @@ module.exports = class accountRepository{
   }
 
   async findAccontVendas(cpf){
-    const account = this.findAccount(cpf)
-    const vendas = await VehiclesBuy.findVehicleBuyCpf(cpf)
 
-    return json({"Vendas" : vendas,
-          "Vendedor" : account    
-    })
+    //const vendas = {};
+
+    const account = await this.findAccount(cpf)    
+
+    if(!account) return venda = {account : "Not Fount", "vendas" : "Not Found"}
+
+    const vendas = await VehicleBuy.findOne({
+      where:{
+        vendedorCpf : cpf
+      }
+    });
+
+    const accountData = {
+      nome: account.nome,
+      email: account.email,
+      tipoConta: account.tipoConta
+    }
+
+    const vendasData = {
+      preco: vendas.preco,
+      data: vendas.data,
+      chassiVeiculo: vendas.chassiVeiculo,
+      status: vendas.statusVeiculo
+    }
+
+    const venda = { vendasData, accountData }
+
+    return venda
     
   }
     

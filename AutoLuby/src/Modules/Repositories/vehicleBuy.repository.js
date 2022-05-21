@@ -11,17 +11,18 @@ class vehicleBuyRepository{
   }
 
   async findVehicle(chassi){
+
     return await Vehicle.findOne({
       where:{
-        chassi: chassi
+        chassi : chassi
       }
     })
   }
 
-  async findVehicleBuy(id) {
+  async findVehicleBuy(chassiVeiculo) {
     return await VehicleBuy.findOne({ 
       where:{
-        vehicle_Id : id
+        chassiVeiculo : chassiVeiculo
       }
      });
   }
@@ -46,20 +47,25 @@ class vehicleBuyRepository{
     } = vehicleBuy
 
     let data = new Date();
-    
-    let dataFormatada = ((data.getDate() )) + "/" + 
-    ((data.getMonth() + 1)) + "/" + 
-    data.getFullYear();
 
-    await Vehicle.updateVehicle(vehicle);
+    await Vehicle.update(
+      {
+        status: statusVeiculo,
+        vendedorCpf: vendedorCpf
+      },
+      {
+        where: {
+            chassi: vehicle.chassi,
+        },
+    })
 
     return await VehicleBuy.create({
-      precoVenda,
-      vendedorCpf,
-      data: dataFormatada,
-      chassiVeiculo,
-      statusVeiculo,
-    }).then();
+      precoVenda : precoVenda,
+      vendedorCpf: vendedorCpf,
+      data: data,
+      chassiVeiculo: chassiVeiculo,
+      statusVeiculo: statusVeiculo,
+    });
   }
     
   async deleteVehicleBuy(id) {

@@ -9,7 +9,7 @@ class vehicleBuyController{
     }
     
     async findVehicle(chassi) {
-        return await vehicleRespo.findVehicle(chassi)
+        return await vehicleRespo.findVehicle(chassi);
     }
 
     async findVehicleBuy(id) {
