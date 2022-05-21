@@ -8,6 +8,12 @@ const session = require('express-session');
 const MySQLStore = require("express-mysql-session")(session);
 require('./src/Modules/Authentication/auth')(passport);
 
+
+function authenticationMiddleware(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.redirect('/login?fail=true');
+}
+
 const app = express();
 app.use(express.json());
 
@@ -28,8 +34,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/login", loginRouter);
-app.use(accountRouter);
-app.use(vehiclesRouter);
+app.use(loginRouter);
+app.use(authenticationMiddleware, accountRouter);
+app.use(authenticationMiddleware, vehiclesRouter);
 
 app.listen(3000, () => console.log("server is running!"));

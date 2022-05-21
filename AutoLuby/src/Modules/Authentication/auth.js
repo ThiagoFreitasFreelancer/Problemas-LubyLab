@@ -11,7 +11,7 @@ module.exports = function(passport){
 
       async function getAccount(login){
 
-        return accountcontroller.findAccountLogin(login);
+        return await accountcontroller.findAccountLogin(login);
 
       }
 
@@ -22,6 +22,7 @@ module.exports = function(passport){
 
       passport.serializeUser((user, done) => {
         
+        console.log("veio ate aque")
         done(null, user.id);
 
       });
@@ -54,6 +55,8 @@ module.exports = function(passport){
 
           const isValid = bcrypt.compareSync(senha, user.senha);
           if(!isValid) return done(null, false);
+
+
           return done(null, user);
 
         }catch(erro){

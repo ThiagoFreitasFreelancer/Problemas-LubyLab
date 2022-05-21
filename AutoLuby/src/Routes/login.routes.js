@@ -4,10 +4,10 @@ const CustomStrategy = require('../Modules/Authentication/auth')
 
 const router = Router();
 
-router.post('/', passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
 
     successRedirect: '/',
-    failureRedirect: '/login?fail=true'
+    failureRedirect: '/?fail=true'
 
 }));
 
