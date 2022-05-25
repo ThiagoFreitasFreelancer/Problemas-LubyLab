@@ -7,7 +7,7 @@ const router = Router();
 router.post('/login', passport.authenticate('local', {
 
     successRedirect: '/',
-    failureRedirect: '/?fail=true'
+    failureRedirect: '/?fail=true' //Somente para teste
 
 }));
 
@@ -19,7 +19,6 @@ router.get('/', (request, response, next) => {
 
     }else{
         
-        console.log("Entrou aque")
         response.json({ "Logado" : 'True' })
     }
 

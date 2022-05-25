@@ -8,19 +8,19 @@ poderão ser incluídas também, de acordo com o que o desenvolvedor sentir a ne
 REQUISITOS FUNCIONAIS
 RF01 - CRUD de funcionários
 
-OK
+concluido
 Cadastro:
 Descrição:O usuário deve ser único, os campos podem ser descritos como: cpf, nome, email, avatar, biografia, senha.
 
-OK
+concluido
 Edição:
 Descrição: Deve ser possível editar um usuário.
 
-OK
+concluido
 Listagem:
 Descrição: Deve ser possível listar todos os funcionários (Gostaríamos de ver paginado, porém, é opcional)
 
-OK - TESTAR VENDAS
+concluido
 Visualizar:
 Descrição: Deve ser possível visualizar um único funcionário e as vendas/reservas de veículos deste.
 
@@ -28,10 +28,11 @@ Concluido
 Remoção:
 Descrição: Deve ser possível remover um funcionário.
 
-
+Concluido
 RF02 - Perfil de acesso (OPCIONAL)
 Descrição: sinta-se à vontade para realizar essa tarefa e use sua criatividade, você poderá utilizar perfis de acesso e atribuir funções para tipos de funcionários (administrador, vendedor).
 
+Concluido
 RF03 - Autenticação
 Descrição: deve ser possível fazer a autenticação no sistema e dividir as rotas públicas das privadas
 

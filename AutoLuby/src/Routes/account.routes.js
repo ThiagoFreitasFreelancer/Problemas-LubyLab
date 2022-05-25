@@ -6,6 +6,26 @@ const controler = new AccountController()
 const vehicleBuyController = new VehiclesBuyController()
 const rota = Router();
 
+async function varifyTypeAccount(request, response, next){
+
+    const { cpf } = request.headers;
+
+    try{        
+        const account = await controler.findAccount(cpf);
+
+        if(account){
+            if(account.tipoConta != "admin")return response.status(500).json({"erro" : "Sem Permissão"});
+
+            return next()
+        }
+        
+        return response.status(500).json({"erro" : "Not Found"})
+
+    }catch(erro){
+        const  { errors  } = erro
+        return response.status(500).json({"erro" : erro})
+    } 
+}
 //OK
 async function verifyIfExistsAccountCPF(request, response, next){
 
@@ -85,7 +105,7 @@ rota.put("/account", verifyIfExistsAccountCPF, async (request, response) => {
 });
 
 //OK
-rota.get("/account", async (request, response) => {
+rota.get("/account", varifyTypeAccount ,async (request, response) => {
 
     try{
 
@@ -98,7 +118,7 @@ rota.get("/account", async (request, response) => {
     }
 });
 
-rota.get("/account/vendas", async (request, response) => {
+rota.get("/account/vendas", varifyTypeAccount, async (request, response) => {
 
     const  { cpf } = request.body
 
@@ -116,7 +136,7 @@ rota.get("/account/vendas", async (request, response) => {
     }
 });
 
-rota.get("/account/one", verifyIfExistsAccountCPF, async (request, response) => {
+rota.get("/account/one", varifyTypeAccount ,verifyIfExistsAccountCPF, async (request, response) => {
 
     const { cpf } = request.headers;
 
@@ -150,7 +170,7 @@ rota.delete("/account", verifyIfExistsAccountCPF, async (request, response) => {
 
 });
 
-rota.post('/account/vehiclereserva', verifyIfExistsVheicle, verifyIfExistsAccountCPF, 
+rota.post('/account/vehiclereserva', varifyTypeAccount, verifyIfExistsVheicle, verifyIfExistsAccountCPF, 
 async (request, response) => {
 
     const vehicleBuy = request.body
@@ -170,7 +190,7 @@ async (request, response) => {
     }
 })
 
-rota.post('/account/vehiclersale', verifyIfExistsVheicle, verifyIfExistsAccountCPF, 
+rota.post('/account/vehiclersale', varifyTypeAccount, verifyIfExistsVheicle, verifyIfExistsAccountCPF, 
 async (request, response) => {
 
     const vehicleBuy = request.body
